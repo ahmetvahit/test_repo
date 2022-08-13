@@ -5,77 +5,55 @@ from datetime import datetime
 
 
 class crawl(scrapy.Spider):
-    name = "Trendyol"
-    headers = {
-        "User-Agent": 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36'
-    }
-    output = []
-    urls = [
-        "https://www.trendyol.com/magaza/profil/easy-smart-care-m-420435",
-        "https://www.trendyol.com/magaza/profil/cnk-m-114723",
-        "https://www.trendyol.com/magaza/profil/gndsmart-m-138257",
-        "https://www.trendyol.com/magaza/profil/gundogan-a-s-m-481543",
-        "https://www.trendyol.com/magaza/profil/elm-shoes-m-497288",
-        "https://www.trendyol.com/magaza/profil/tekce-ticaret-m-315154",
-        "https://www.trendyol.com/magaza/profil/bonjey-market-m-455724",
-        "https://www.trendyol.com/magaza/profil/emrepazaravm-m-166315",
-        "https://www.trendyol.com/magaza/profil/mdz-collection-m-206113",
-        "https://www.trendyol.com/magaza/profil/inadina-pilav-m-623453",
-        "https://www.trendyol.com/magaza/profil/chezedo-m-549703",
-        "https://www.trendyol.com/magaza/profil/minimono-m-522055",
-        "https://www.trendyol.com/magaza/profil/hediyechy-m-265889",
-        "https://www.trendyol.com/magaza/profil/organikji-m-349365",
-        "https://www.trendyol.com/magaza/profil/luvly-pets-m-316942",
-        "https://www.trendyol.com/magaza/profil/deafox-m-108655",
-        "https://www.trendyol.com/magaza/profil/arabulcenter-m-597771",
-        "https://www.trendyol.com/magaza/profil/yemci-petshop-m-144941"
-    ]
+    def __init__(self, x):
+        self.x = x
+        self.name = "Trendyol"
+        self.headers = {
+            "User-Agent": 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36'
+        }
+        self.output = []
+        # urls = [
+        #     "https://www.trendyol.com/magaza/profil/easy-smart-care-m-420435",
+        #     "https://www.trendyol.com/magaza/profil/cnk-m-114723",
+        #     "https://www.trendyol.com/magaza/profil/gndsmart-m-138257",
+        #     "https://www.trendyol.com/magaza/profil/gundogan-a-s-m-481543",
+        #     "https://www.trendyol.com/magaza/profil/elm-shoes-m-497288",
+        #     "https://www.trendyol.com/magaza/profil/tekce-ticaret-m-315154",
+        #     "https://www.trendyol.com/magaza/profil/bonjey-market-m-455724",
+        #     "https://www.trendyol.com/magaza/profil/emrepazaravm-m-166315",
+        #     "https://www.trendyol.com/magaza/profil/mdz-collection-m-206113",
+        #     "https://www.trendyol.com/magaza/profil/inadina-pilav-m-623453",
+        #     "https://www.trendyol.com/magaza/profil/chezedo-m-549703",
+        #     "https://www.trendyol.com/magaza/profil/minimono-m-522055",
+        #     "https://www.trendyol.com/magaza/profil/hediyechy-m-265889",
+        #     "https://www.trendyol.com/magaza/profil/organikji-m-349365",
+        #     "https://www.trendyol.com/magaza/profil/luvly-pets-m-316942",
+        #     "https://www.trendyol.com/magaza/profil/deafox-m-108655",
+        #     "https://www.trendyol.com/magaza/profil/arabulcenter-m-597771",
+        #     "https://www.trendyol.com/magaza/profil/yemci-petshop-m-144941"
+        # ]
 
-    today = datetime.now().strftime("%Y-%m-%d")
-    date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        self.today = datetime.now().strftime("%Y-%m-%d")
+        self.date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     def start_requests(self):
-        for url in self.urls:
-            req = scrapy.Request(url, callback=self.parse, dont_filter=True, headers=self.headers)
-            yield req
+        # for url in self.urls:
+        req = scrapy.Request(self.x, callback=self.parse, dont_filter=True, headers=self.headers)
+        yield req
 
     def parse(self, response):
         seller_score = response.css(".seller-store__score::text").get()
-        # badges = response.xpath("//img[@class='badge-img']/@src").getall()
-        # badges_list = []
         try:
             s_seller = response.xpath("//img[@class='badge-img']/@src")[0].get()
-            successful_seller = s_seller.split("/")[5].replace(".svg", "").replace("_", " ").replace("i","ı").capitalize()
+            successful_seller = s_seller.split("/")[5].replace(".svg", "").replace("_", " ").replace("i",
+                                                                                                     "ı").capitalize()
         except:
             successful_seller = None
         try:
             f_seller = response.xpath("//img[@class='badge-img']/@src")[1].get()
-            fast_seller = f_seller.split("/")[5].replace(".svg", "").replace("-", " ").replace("i","ı").capitalize()
+            fast_seller = f_seller.split("/")[5].replace(".svg", "").replace("-", " ").replace("i", "ı").capitalize()
         except:
             fast_seller = None
-
-        # for b in badges:
-        #     badge = b.split("/")[5].replace(".svg", "")
-        #
-        #     if badge == "basarili_satici":
-        #         successful_seller = "Başarılı Satıcı>"
-        #     else:
-        #         successful_seller = None
-
-        # if badge == "hizli-satici":
-        #     fast_seller = "Hızlı Satıcı"
-        # else:
-        #     fast_seller = None
-        # if badge == "yetkili_satici":
-        #     authorized_dealer = "Yetkili Satıcı"
-        # else:
-        #     authorized_dealer = None
-
-        # badges_list.append({
-        #     "successful_seller": successful_seller,
-        #     "fast_seller": fast_seller,
-        #     #"authorized_dealer": authorized_dealer
-        # })
 
         location = response.css(".seller-info-container__wrapper__text-container__value::text")[1].get()
         number_of_products = response.css(".seller-info-container__wrapper__text-container__value::text")[2].get()
@@ -88,7 +66,7 @@ class crawl(scrapy.Spider):
 
         try:
             ans_rate = response.css(".seller-metrics-container__wrapper__value::text")[1].get()
-            answer_rate = ans_rate
+            answer_rate = ans_rate.replace("%", "") + "%"
         except:
             answer_rate = None
 
@@ -115,11 +93,12 @@ class crawl(scrapy.Spider):
     def close(self, spider, reason):
         with open(f"step_1_{self.name}_{self.today}.json", "w", encoding="utf-8") as f:
             json.dump(self.output, f, ensure_ascii=False)
-            #
+
             # df = pd.read_json(json.dumps(self.output, ensure_ascii=False), encoding="utf-8")
             # df.to_excel("sample.xlsx",encoding="utf-8", index=False)
 
 
 process = CrawlerProcess()
-process.crawl(crawl)
+x = str(input("Enter URL: "))
+process.crawl(crawl, x)
 process.start()
