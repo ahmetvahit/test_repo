@@ -102,20 +102,6 @@ class crawl(scrapy.Spider):
 
     def parse(self, response, **kwargs):  # TODO Ürün sayfasındasın!!
         pass
-        # # TODO Telefon Numarası Eklenecek!!
-        # slug = kwargs["slug"]
-        # kep = kwargs["kep"]
-        # mersis = kwargs["mersis"]
-        # m_city = kwargs["m_city"]
-        # # brand = kwargs["brand"]
-        #
-        # self.output.append({
-        #     "merchant_slug": slug,
-        #     "email": kep,
-        #     "mersis_no": mersis,
-        #     "phone": 'none',
-        #     "city": m_city,
-        # })
 
     def close(self, spider, reason):
         with open(f"data/step_4_merchant_company_details_{self.name}.json", "w", encoding="utf-8") as f:

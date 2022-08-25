@@ -3,7 +3,6 @@ import scrapy
 from scrapy.crawler import CrawlerProcess
 from datetime import datetime
 
-
 class crawl(scrapy.Spider):
     name = "Hepsiburada"
     output = []
@@ -131,31 +130,7 @@ class crawl(scrapy.Spider):
             })
 
     def detail(self, response, **kwargs):
-        # slug = kwargs["slug"]
-        # products_total = kwargs["products_total"]
-        # reviews_total = kwargs["reviews_total"]
-        # cat = kwargs["cat"]
-        # brand = kwargs["brand"]
-        # names = kwargs["names"]
-        # links = kwargs["links"]
         pass
-
-        # breadcrumbs = response.xpath("//ul[@class='breadcrumbs']/li/a/span/text()").getall()
-        # br = ">".join([x.strip() for x in breadcrumbs])
-
-        # self.output.append({
-        #     "merchant_slug": slug,
-        #     "product_total": products_total,
-        #     "reviews_total": reviews_total,
-        #     "categories": cat,
-        #     "brands": brand,
-        #     "best_selling_products": {
-        #         "name": names,
-        #         "url": links,
-        #         "categories": br,
-        #     },
-        #     "last_update": self.date,
-        # })
 
     def close(self, spider, reason):
         with open(f"data/step_3_merchant_details{self.name}_{self.today}.json", "w", encoding="utf-8") as f:

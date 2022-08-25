@@ -3,7 +3,6 @@ import scrapy
 from scrapy.crawler import CrawlerProcess
 from datetime import datetime
 
-
 class crawl(scrapy.Spider):
     name = "Hepsiburada"
     output = []

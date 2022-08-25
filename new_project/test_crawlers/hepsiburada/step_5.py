@@ -174,33 +174,20 @@ class crawl(scrapy.Spider):
     #     'hbus_sessionId': 'bd11c21f-591b-4352-aa57-852840495505%7C1661166279274',
     # }
 
-    stores = [
-        'https://www.hepsiburada.com/dahlia-moda-yan-buzgulu-gomlek-p-HBCV000006H0V8?magaza=DAHL%C4%B0A%20MODA',
-        'https://www.hepsiburada.com/omron-m2-basic-hem-7121j-e-ust-koldan-olcer-dijital-tansiyon-aleti-p-SGOMRONBASIC?magaza=CanT%C4%B1p',
-        'https://www.hepsiburada.com/wood-montessori-kitaplik-3-rafli-p-HBV0000128JF9?magaza=Woodesign',
-        'https://www.hepsiburada.com/tablocek-kanvas-tablo-taraftar-fenerbahce-fb-kanarya-spor-sukru-saracoglu-p-HBCV00001X2ENM?magaza=tablo%C3%A7ek',
-        'https://www.hepsiburada.com/tutku-tutku-erkek-beyaz-pamuklu-atlet-6li-paket-p-HBV000017RFQI?magaza=ikomi%C3%A7giyim',
-        'https://www.hepsiburada.com/magazacim-hayatin-ritmi-soyut-yagli-boya-reproduksiyon-kanvas-tablo-tbl1593-35x50-cm-p-HBCV00000398K2?magaza=magazacim1',
-        'https://www.hepsiburada.com/zuzupa-design-mekanik-kalp-metal-tablo-uz95-p-HBCV000010IEHS?magaza=zuzupadesign',
-        'https://www.hepsiburada.com/mucito-metal-sise-acacagi-anahtarlik-p-HBCV00000MNH6Q?magaza=HakseverPromosyon',
-        'https://www.hepsiburada.com/bepanthol-baby-pisik-onleyici-merhem-100-gr-30-gr-paket-p-HBV00000P6J15?magaza=Baby%26More',
-        'https://www.hepsiburada.com/wurth-dizel-enjektor-temizleyici-300-ml-p-OTEV04893567?magaza=Bahriler%20Ticaret',
-    ]
-
     @staticmethod
     def prepare_urls():
         data = open("data/step_4_merchant_company_details_Hepsiburada.json", encoding="utf-8").read()
         data = json.loads(data)
         urls = []
-        for row in range(len(data)):
+        for row in data[:10]:
             urls.append(row['p_url'])
 
         urls = list(set(urls))
         return urls
 
     def start_requests(self):
-        #urls = self.prepare_urls()
-        for url in self.stores:
+        urls = self.prepare_urls()
+        for url in urls:
             req = scrapy.Request(url, callback=self.continues,
                                  cookies=self.cookies, dont_filter=True, headers=self.headerss)
             yield req
